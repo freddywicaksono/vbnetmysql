@@ -117,4 +117,22 @@
             DBDisconnect()
         End Try
     End Sub
+
+    Public Function Login(ByVal uname As String, ByVal pwd As String) As Boolean
+        Dim pwd_en As String
+        pwd_en = getMD5Hash(pwd)
+        DBConnect()
+        strsql = "SELECT * FROM user WHERE username='" & uname & "' and passwd ='" & pwd_en & "'"
+        myCommand.Connection = conn
+        myCommand.CommandText = strsql
+        DR = myCommand.ExecuteReader
+        If (DR.HasRows = True) Then
+            login_valid = True
+        Else
+            login_valid = False
+        End If
+        DBDisconnect()
+        Return login_valid
+    End Function
+
 End Class
